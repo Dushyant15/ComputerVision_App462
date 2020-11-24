@@ -8,7 +8,7 @@ With the [Core ML](https://developer.apple.com/documentation/coreml) framework, 
 
 This app uses a CreateML trained HumanEmoClassfier_8.mlmodel model, that helps classify each face based on the emotion shown in to one of four categories (Angry, Disgust, Happy, Sad).
 
-![example screenshots of the app identifying a happy, disgust and sad face](Documentation/classes.jpg)
+![example screenshots of the app identifying a happy, disgust and sad face](Documentation/Classes.png)
 
 ## Getting Started
 
@@ -90,22 +90,18 @@ This sample code project runs on iOS 11. However, you can also use Vision and Co
         
     >(2) Setting up the right version as per the model file 
     
-     You can watch my youtube video that describes the steps to accomplish above mentioned two steps:  
-          
-    https://www.youtube.com/watch?v=nJc4DEusYbU&feature=youtu.be 
       
 ## Other_commands_that_you_might_need
 
    
-  >(1)GitHub
-      Uploading your existing project to Github:
-      1) Create a new repository in Github
-      2) Open a terminal on the local project folder by right clicking on the folder
+  1. GitHub Upload
+     - Create a new repository in Github
+     - Open a terminal on the local project folder by right clicking on the folder
       
-   >(2)Then perform the following steps on the terminal
-      3) git init : This initializes the local git repository
-      4) git add . 
-      5) git commit -m "my first commit"
-      6) git remote add origin https://github.com/Dushyant15/ComputerVision_App462.git : This connects your local git to online newly created repository
-      7) git push -u origin master : This pushes the local files to the github repository
+  2. Then perform the following steps on the terminal
+     - git init : This initializes the local git repository
+     - git add . 
+     - git commit -m "my first commit"
+     - git remote add origin https://github.com/Dushyant15/ComputerVision_App462.git : This connects your local git to online newly created repository
+     - git push -u origin master : This pushes the local files to the github repository
       
