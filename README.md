@@ -40,7 +40,7 @@ This sample code project runs on iOS 11. However, you can also use Vision and Co
     
     You can watch my youtube video that describes the steps to accomplish above mentioned two steps:  
           
-    https://www.youtube.com/watch?v=M58_XOyJW04&feature=youtu.be
+   [Train an Image Classifier using CreateML] (https://www.youtube.com/watch?v=M58_XOyJW04&feature=youtu.be).
              
    
 ## Add_the_model_to_a_Xcode_Project 
@@ -80,7 +80,7 @@ This sample code project runs on iOS 11. However, you can also use Vision and Co
    
    You can watch my youtube video that describes the steps to accomplish above mentioned four steps:  
           
-    https://www.youtube.com/watch?v=nJc4DEusYbU&feature=youtu.be 
+    [Build an iOS app using the trained CreateML model] (https://www.youtube.com/watch?v=nJc4DEusYbU&feature=youtu.be).
         
 ## Xcode_update_build_execute 
   In this section, we would list out sections on the Xcode that need to be set up before build and execute can happen succesfully
