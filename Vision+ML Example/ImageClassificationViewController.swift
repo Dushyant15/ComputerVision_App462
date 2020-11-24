@@ -10,6 +10,7 @@ import CoreML
 import Vision
 import ImageIO
 
+@available(iOS 12.0, *)
 class ImageClassificationViewController: UIViewController {
     // MARK: - IBOutlets
     
@@ -27,15 +28,18 @@ class ImageClassificationViewController: UIViewController {
              To use a different Core ML classifier model, add it to the project
              and replace `MobileNet` with that model's generated Swift class.
              */
-            let model = try VNCoreMLModel(for: MobileNet().model)
+           
+            let model = try VNCoreMLModel(for: HumanEmoClassfier_8().model)
             
+           
             let request = VNCoreMLRequest(model: model, completionHandler: { [weak self] request, error in
                 self?.processClassifications(for: request, error: error)
             })
             request.imageCropAndScaleOption = .centerCrop
             return request
-        } catch {
-            fatalError("Failed to load Vision ML model: \(error)")
+            
+        }
+        catch {fatalError("Failed to load Vision ML model: \(error)")
         }
     }()
     
@@ -82,6 +86,7 @@ class ImageClassificationViewController: UIViewController {
                    return String(format: "  (%.2f) %@", classification.confidence, classification.identifier)
                 }
                 self.classificationLabel.text = "Classification:\n" + descriptions.joined(separator: "\n")
+              
             }
         }
     }
@@ -118,6 +123,7 @@ class ImageClassificationViewController: UIViewController {
     }
 }
 
+@available(iOS 12.0, *)
 extension ImageClassificationViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     // MARK: - Handling Image Picker Selection
 
