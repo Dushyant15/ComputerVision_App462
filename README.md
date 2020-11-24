@@ -6,7 +6,7 @@ Preprocess photos using the Vision framework and classify them with a Core ML mo
 
 With the [Core ML](https://developer.apple.com/documentation/coreml) framework, you can use a trained machine learning model to classify input data. The [Vision](https://developer.apple.com/documentation/vision) framework works with Core ML to apply classification models to images, and to preprocess those images to make machine learning tasks easier and more reliable.
 
-This sample app uses the open source MobileNet model, one of several [available classification models](https://developer.apple.com/machine-learning), to identify an image using 1000 classification categories as seen in the example screenshots below.
+This app uses a CreateML trained HumanEmoClassfier_8.mlmodel model, that helps classify each face based on the emotion shown in to one of four categories (Angry, Disgust, Happy, Sad).
 
 ![example screenshots of app identifying a potted plant, a fountain, and a bunch of bananas](Documentation/classifications.png)
 
@@ -14,63 +14,97 @@ This sample app uses the open source MobileNet model, one of several [available 
 
 This sample code project runs on iOS 11. However, you can also use Vision and Core ML in your own apps on macOS 10.13, iOS 11, or tvOS 11.
 
-## Preview the Sample App
+## Table of Contents
+- [DataSet](#dataSet)
+- [Using CreateML to train a Image Classification model](#Using_CreateML_to_train_a_CNN_Model)
+- [Export the trained model](#Export_the_trained_model)
+- [Add the model to Xcode project](#Add_the_model_to_a_Xcode_Project)
+- [Make Changes to Xcode project, build and execute](#Xcode_update_build_execute)
+- [Other commands that you might need](#Other_commands_that_you_might_need)
 
-To see this sample app in action, build and run the project, then use the buttons in the sample app's toolbar to take a picture or choose an image from your photo library. The sample app then uses Vision to apply the Core ML model to the chosen image, and shows the resulting classification labels along with numbers indicating the confidence level of each classification. It displays the top two classifications in order of the confidence score the model assigns to each.
+## DataSet
+  > Where I get the Image data for four Human Emotions (Happy, Sad, Disgust & Angry) ?  
+    I scrapped the images using the bing_scraper.py (attached)   
+  
+    You can execute the script using the following command:
+    python3 bing_scraper.py --search 'happy human face' --limit 10 --download --chromedriver /Users/dushyantsengar/documents/docs/chromedriver
+    
+    To be able to successfully run above script, please download the chromedriver. Then, place the .py script in the same folder and CD to same directory on the terminal. Execute the script by the changing the query in the single quotes and number of images you need to download.
+            
+## Using_CreateML_to_train_a_CNN_Model
 
-## Set Up Vision with a Core ML Model
+  >(1) How do I upload the training and test pictures and train the module using CreateML?  
+  
+  >(2) How do I copy the trained model to the local dir for further deployment / integration with the iOS app ?
+    
+    You can watch my youtube video that describes the steps to accomplish above mentioned two tasks:  
+          
+    https://www.youtube.com/watch?v=M58_XOyJW04&feature=youtu.be
+             
+   
+## Add_the_model_to_a_Xcode_Project 
 
-Core ML automatically generates a Swift class that provides easy access to your ML model; in this sample, Core ML automatically generates the `MobileNet` class from the `MobileNet` model.  To set up a Vision request using the model, create an instance of that class and use its `model` property  to create a [`VNCoreMLRequest`](https://developer.apple.com/documentation/vision/vncoremlrequest) object. Use the request object's completion handler to specify a method to receive results from the model after you run the request.
+   > Use the trained and downloaded model for iOS app deployment?
+   
+        It can be done in following four steps: 
 
-``` swift
-let model = try VNCoreMLModel(for: MobileNet().model)
+   >(1) Download the pre-built sample app that uses Vision to apply the Core ML model to the chosen image, and shows the resulting classification labels along           with numbers indicating the confidence level of each classification. 
+        It displays the top two classifications in order of the confidence score the model assigns to each.  
+       
+        Link to download the app:
+        
+        https://developer.apple.com/documentation/vision/classifying_images_with_vision_and_core_ml 
+     
+     
+   >(2) Open the Xcode project and Understand the Swift Architecture for making inference/predictions
+    
+       1) Create one or more requests. This step should have created a request using a .MLMODEL object.This is done by the "classificationRequest" function
+       2) Create and run a request completion handler. 
+          This handler is responsible for invoking the actual classification task (using "processClassifications") and prints the output of classification.
+       3) Also create a separate handler to perform the Asynchronous Vision request, and then schedule that request. 
+          This is done by the "updateClassifications" function by invoking the previously created request by the "classificationRequest" function
+       4) Finally, adding the imagePickerController(_:didFinishPickingMediaWithInfo:): updateClassifications(image) at the end of the Swift code
+          will trigger the classification request when the user selects an image.
+        
+        
+   >(3) Add the trained CreateML module to the Xcode project that would generate a Swift class 
+    
+        Please refer to the linked Youtube video. This is largely a drag and drop and excercise.
+        
+   >(4) Add a simulator or an iPhone device to output your model output
+    
+        Please refer to the linked Youtube video. 
+        These are pre-built in the Xcode environment. You need to register a team using your AppleID to be able to use all features of Xcode environment. 
+        One can also register their iPhone as a simulator to take real time pictures and classify.
+   
+   You can watch my youtube video that describes the steps to accomplish above mentioned four steps:  
+          
+    https://www.youtube.com/watch?v=nJc4DEusYbU&feature=youtu.be 
+        
+## Xcode_update_build_execute 
+  In this section, we would list out sections on the Xcode that need to be set up before build and execute can happen succesfully
+    
+    >(1) Setting up the unique Build Identifier
+    
+        
+    >(2) Setting up the version
+    
+     You can watch my youtube video that describes the steps to accomplish above mentioned two steps:  
+          
+    https://www.youtube.com/watch?v=nJc4DEusYbU&feature=youtu.be 
+      
+## Other_commands_that_you_might_need
 
-let request = VNCoreMLRequest(model: model, completionHandler: { [weak self] request, error in
-    self?.processClassifications(for: request, error: error)
-})
-request.imageCropAndScaleOption = .centerCrop
-return request
-```
-[View in Source](x-source-tag://MLModelSetup)
-
-An ML model processes input images in a fixed aspect ratio, but input images may have arbitrary aspect ratios, so Vision must scale or crop the image to fit. For best results, set the request's [`imageCropAndScaleOption`](https://developer.apple.com/documentation/vision/vncoremlrequest/2890144-imagecropandscaleoption) property to match the image layout the model was trained with. For the [available classification models](https://developer.apple.com/machine-learning), the [`centerCrop`](https://developer.apple.com/documentation/vision/vnimagecropandscaleoption/centercrop) option is appropriate unless noted otherwise.
-
-
-## Run the Vision Request
-
-Create a [`VNImageRequestHandler`](https://developer.apple.com/documentation/vision/vnimagerequesthandler) object with the image to be processed, and pass the requests to that object's [`perform(_:)`](https://developer.apple.com/documentation/vision/vnimagerequesthandler/2880297-perform) method. This method runs synchronously—use a background queue so that the main queue isn't blocked while your requests execute.
-
-``` swift
-DispatchQueue.global(qos: .userInitiated).async {
-    let handler = VNImageRequestHandler(ciImage: ciImage, orientation: orientation)
-    do {
-        try handler.perform([self.classificationRequest])
-    } catch {
-        /*
-         This handler catches general image processing errors. The `classificationRequest`'s
-         completion handler `processClassifications(_:error:)` catches errors specific
-         to processing that request.
-         */
-        print("Failed to perform classification.\n\(error.localizedDescription)")
-    }
-}
-```
-[View in Source](x-source-tag://PerformRequests)
-
-Most models are trained on images that are already oriented correctly for display. To ensure proper handling of input images with arbitrary orientations, pass the image's orientation to the image request handler. (This sample app adds an initializer, [`init(_:)`](x-source-tag://ConvertOrientation), to the [`CGImagePropertyOrientation`](https://developer.apple.com/documentation/imageio/cgimagepropertyorientation) type for converting from [`UIImageOrientation`](https://developer.apple.com/documentation/uikit/uiimage/orientation) orientation values.)
-
-## Handle Image Classification Results
-
-The Vision request's completion handler indicates whether the request succeeded or resulted in an error. If it succeeded, its [`results`](https://developer.apple.com/documentation/vision/vnrequest/2867238-results) property contains [`VNClassificationObservation`](https://developer.apple.com/documentation/vision/vnclassificationobservation) objects describing possible classifications identified by the ML model.
-
-``` swift
-func processClassifications(for request: VNRequest, error: Error?) {
-    DispatchQueue.main.async {
-        guard let results = request.results else {
-            self.classificationLabel.text = "Unable to classify image.\n\(error!.localizedDescription)"
-            return
-        }
-        // The `results` will always be `VNClassificationObservation`s, as specified by the Core ML model in this project.
-        let classifications = results as! [VNClassificationObservation]
-```
-[View in Source](x-source-tag://ProcessClassifications)
+   
+  >(1)GitHub
+      Uploading your existing project to Github:
+      1) Create a new repository in Github
+      2) Open a terminal on the local project folder by right clicking on the folder
+      
+   >(2)Then perform the following steps on the terminal
+      3) git init : This initializes the local git repository
+      4) git add . 
+      5) git commit -m "my first commit"
+      6) git remote add origin https://github.com/Dushyant15/ComputerVision_App462.git : This connects your local git to online newly created repository
+      7) git push -u origin master : This pushes the local files to the github repository
+      
