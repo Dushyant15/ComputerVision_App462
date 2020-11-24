@@ -8,7 +8,7 @@ With the [Core ML](https://developer.apple.com/documentation/coreml) framework, 
 
 This app uses a CreateML trained HumanEmoClassfier_8.mlmodel model, that helps classify each face based on the emotion shown in to one of four categories (Angry, Disgust, Happy, Sad).
 
-![example screenshots of app identifying a potted plant, a fountain, and a bunch of bananas](Documentation/classifications.png)
+![example screenshots of the app identifying a happy, disgust and sad face](Documentation/classes.png)
 
 ## Getting Started
 
@@ -34,10 +34,11 @@ This sample code project runs on iOS 11. However, you can also use Vision and Co
 ## Using_CreateML_to_train_a_CNN_Model
 
   >(1) How do I upload the training and test pictures and train the module using CreateML?  
-  
+
+## Export_the_trained_model
   >(2) How do I copy the trained model to the local dir for further deployment / integration with the iOS app ?
     
-    You can watch my youtube video that describes the steps to accomplish above mentioned two tasks:  
+    You can watch my youtube video that describes the steps to accomplish above mentioned two steps:  
           
     https://www.youtube.com/watch?v=M58_XOyJW04&feature=youtu.be
              
@@ -84,10 +85,10 @@ This sample code project runs on iOS 11. However, you can also use Vision and Co
 ## Xcode_update_build_execute 
   In this section, we would list out sections on the Xcode that need to be set up before build and execute can happen succesfully
     
-    >(1) Setting up the unique Build Identifier
+    >(1) Set up the unique Build Identifier and Create a Team (personal team using AppleID) to be able to build and execute a project
     
         
-    >(2) Setting up the version
+    >(2) Setting up the right version as per the model file 
     
      You can watch my youtube video that describes the steps to accomplish above mentioned two steps:  
           
