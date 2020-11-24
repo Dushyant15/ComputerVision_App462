@@ -8,7 +8,7 @@ With the [Core ML](https://developer.apple.com/documentation/coreml) framework, 
 
 This app uses a CreateML trained HumanEmoClassfier_8.mlmodel model, that helps classify each face based on the emotion shown in to one of four categories (Angry, Disgust, Happy, Sad).
 
-![example screenshots of the app identifying a happy, disgust and sad face](Documentation/classes.png)
+![example screenshots of the app identifying a happy, disgust and sad face](Documentation/classes.jpg)
 
 ## Getting Started
 
